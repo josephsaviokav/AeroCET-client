@@ -1,29 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import achievement1 from '../../Data/images/achievements/1.jpg';
+import achievement2 from '../../Data/images/achievements/2.jpg';
+import achievement3 from '../../Data/images/achievements/3.jpeg';
+
+const achievementImages = [achievement1, achievement2, achievement3];
 
 export default function Achievements() {
   const [isActive, setIsActive] = useState(false);
-  const [achievements, setAchievements] = useState<string[]>([]);
   const teamRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/achievements')
-      .then((response) => {
-        console.log("Achievements Data:", response.data); 
-        setAchievements(Array.isArray(response.data) ? response.data : []); 
-        
-        setTimeout(() => {
-          setIsActive(true);
-        }, 1000);
-      })
-      .catch((error) => {
-        console.error("Error fetching achievements:", error);
-        setAchievements([]);
-      });
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsActive(entry.isIntersecting);
@@ -67,26 +56,25 @@ export default function Achievements() {
         Achievements
       </h1>
 
-      <div className="flex flex-wrap overflow-auto flex-col gap-3">
-        {[...achievements].reverse().map((image, index) => (
+      <div className="flex flex-wrap justify-center gap-6 flex-row">
+        {achievementImages.map((image, index) => (
           <div
             key={index}
             className={clsx(
-              "flex-1 flex justify-center items-center min-w-0",
+              "flex justify-center items-center",
               "transition-all duration-500 ease-in-out",
               { 'opacity-0 translate-y-8': !isActive },
-              { 'opacity-100 translate-y-0 delay-700': isActive }
+              { 'opacity-100 translate-y-0': isActive }
             )}
+            style={{ transitionDelay: isActive ? `${300 + index * 150}ms` : '0ms' }}
           >
-          <div className="w-64 aspect-[3/4] overflow-hidden rounded-xl shadow-lg shrink-0">
-
-            <img
-              src={image || '/fallback.jpg'}
-              alt="Achievement"
-              className="w-full h-full"
-              onError={(e) => (e.currentTarget.src = '/fallback.jpg')}
-            />
-          </div>
+            <div className="w-64 aspect-[3/4] overflow-hidden rounded-xl shadow-lg shrink-0 hover:scale-105 transition-transform duration-300">
+              <img
+                src={image}
+                alt={`Achievement ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         ))}
       </div>

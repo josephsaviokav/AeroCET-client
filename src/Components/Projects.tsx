@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
+import auto from '../../Data/images/auto.jpeg';
+import nonauto from '../../Data/images/nonauto.jpeg';
 
 type Project = {
   project_id: string;
@@ -11,6 +13,7 @@ type Project = {
   status: string;
   img_path: string;
   description: string;
+  localImg?: string;
 };
 
 export default function Projects() {
@@ -22,7 +25,22 @@ export default function Projects() {
   useEffect(() => {
     axios
       .get('/api/projects')
-      .then((res) => setProjects(Array.isArray(res.data) ? res.data : []))
+      .then((res) => {
+        const projectData = Array.isArray(res.data) ? res.data : [];
+        
+        // Map local images to projects
+        const projectsWithImages = projectData.map((p: Project, index: number) => {
+          if (index === 0 && p.img_path.includes('auto')) {
+            return { ...p, localImg: auto };
+          } else if (index === 1 && p.img_path.includes('nonauto')) {
+            return { ...p, localImg: nonauto };
+          }
+          return p;
+        });
+
+        console.log('Projects fetched with images:', projectsWithImages);
+        setProjects(projectsWithImages);
+      })
       .catch((error) => {
         console.error('Error fetching projects:', error);
         setProjects([]);
@@ -93,12 +111,13 @@ export default function Projects() {
           >
             {/* Project Image */}
             <div className="lg:w-56 w-full h-40 shrink-0 overflow-hidden rounded-xl bg-slate-700/50">
-              {project.img_path ? (
+              {project.localImg || project.img_path ? (
                 <img
-                  src={`http://localhost:3001${project.img_path}`}
+                  src={project.localImg || project.img_path}
                   alt={project.project_name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
+                    console.error(`Failed to load image: ${project.img_path}`);
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.parentElement!.innerHTML =
                       '<div class="w-full h-full flex items-center justify-center text-slate-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>';

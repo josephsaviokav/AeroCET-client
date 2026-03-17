@@ -1,33 +1,25 @@
 import './Gallery.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+// Dynamically import all gallery images
+const galleryImages = import.meta.glob('../../Data/images/gallary/*.{jpg,jpeg,png,gif}', { eager: true });
+const BASE_IMAGES = Object.values(galleryImages).map((module: any) => module.default);
 
 export default function Gallery() {
   const [isActive, setIsActive] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<string[]>(BASE_IMAGES);
   const galleryRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   const goTo = () => {
-    navigate('/');
+    navigate('/gallery');
   };
 
-  // Fetch images from backend
+  // Initialize images on component mount
   useEffect(() => {
-    axios.get('/api/gallery')
-      .then((response) => {
-        const imgs = response.data?.images || response.data || [];
-        setImages(Array.isArray(imgs) ? imgs : []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching gallery:', error);
-        setImages([]);
-        setLoading(false);
-      });
+    setImages(BASE_IMAGES);
 
     // Intersection Observer for fade-in animation
     const observer = new IntersectionObserver(
@@ -67,7 +59,7 @@ export default function Gallery() {
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-700 delay-300 ease-in-out': isActive }
       )}>
-        {!loading && (
+        {images.length > 0 && (
           <div className="scroll-track-up">
             {duplicatedFirstColumn.map((imageUrl, index) => (
               <img key={index} src={imageUrl} alt="Gallery" className="rounded-3xl mb-3 flex-shrink-0" />
@@ -82,7 +74,7 @@ export default function Gallery() {
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-1000 delay-700 ease-in-out': isActive }
       )}>
-        {!loading && (
+        {images.length > 0 && (
           <div className="scroll-track-down">
             {duplicatedSecondColumn.map((imageUrl, index) => (
               <img key={index} src={imageUrl} alt="Gallery" className="rounded-3xl mb-3 flex-shrink-0" />
@@ -97,7 +89,7 @@ export default function Gallery() {
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-700 delay-500 ease-in-out': isActive }
       )}>
-        {!loading && (
+        {images.length > 0 && (
           <div className="scroll-track-up">
             {duplicatedThirdColumn.map((imageUrl, index) => (
               <img key={index} src={imageUrl} alt="Gallery" className="rounded-3xl mb-3 flex-shrink-0" />
