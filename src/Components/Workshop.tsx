@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
+import { toApiUrl } from '../config/api';
 
 type Workshop = {
   workshop_id: string;
@@ -19,7 +20,7 @@ export default function Workshop() {
 
   useEffect(() => {
     axios
-      .get('/api/workshops')
+      .get(toApiUrl('/api/workshops'))
       .then((res) => setWorkshops(Array.isArray(res.data) ? res.data : []))
       .catch((error) => {
         console.error('Error fetching workshops:', error);
@@ -77,7 +78,7 @@ export default function Workshop() {
             {/* Image */}
             <div className="lg:w-1/3 w-full overflow-hidden rounded-xl shrink-0">
               <img
-                src={`http://localhost:3001${workshop.image}`}
+                src={toApiUrl(workshop.image)}
                 alt={workshop.workshop_name}
                 className="w-full h-56 object-cover"
                 onError={(e) =>

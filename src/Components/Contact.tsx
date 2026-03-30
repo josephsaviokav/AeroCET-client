@@ -4,6 +4,7 @@ import drone from '../assets/images/drone.png';
 import download from '../assets/images/downloadButton.png';
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { toApiUrl } from '../config/api';
 
 export default function Contact() {
   const [isActive, setIsActive] = useState(false);
@@ -58,7 +59,7 @@ export default function Contact() {
         <h2>SUPPORT US IN THE UPCOMING SAE <br />Competitions!</h2>
         <button
          onClick={() => {
-          window.location.href = '/api/contact';
+          window.location.href = toApiUrl('/api/contact');
         }}
         >
           <img src={download} alt="Loader-image" className="loader-image h-18 my-4" />

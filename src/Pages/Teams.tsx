@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import clsx from "clsx";
 import logo from "../assets/AeroCET-logo.png";
+import { toApiUrl } from '../config/api';
 
 export default function Teams() {
   const { year } = useParams(); // Extracts year from URL like "/teams/2025"
@@ -18,7 +19,7 @@ export default function Teams() {
 
   useEffect(() => {
     axios
-      .get('/api/execom')
+      .get(toApiUrl('/api/execom'))
       .then((response) => {
         console.log("API Response:", response.data); // Debug API response
 
@@ -76,7 +77,7 @@ export default function Teams() {
           people.map((member) => (
             <div key={member.id} className={clsx("bg-gray-800 p-2 rounded-xl transform transition duration-300 hover:scale-105 flex flex-col items-center", { "opacity-0 translate-y-8": !isActive }, { "opacity-100 translate-y-0 transition-all duration-700 ease-in-out": isActive })}>
               <img
-                src={member.imgURL || logo} 
+                src={member.imgURL ? toApiUrl(member.imgURL) : logo} 
                 onError={(e) => (e.currentTarget.src = logo)} // Fallback if image fails
                 className="rounded-lg w-full max-w-[100px] sm:max-w-[150px] object-cover" 
                 alt={member.name} 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import clsx from 'clsx';
 import auto from '../../Data/images/auto.jpeg';
 import nonauto from '../../Data/images/nonauto.jpeg';
+import { toApiUrl } from '../config/api';
 
 type Project = {
   project_id: string;
@@ -24,7 +25,7 @@ export default function Projects() {
 
   useEffect(() => {
     axios
-      .get('/api/projects')
+      .get(toApiUrl('/api/projects'))
       .then((res) => {
         const projectData = Array.isArray(res.data) ? res.data : [];
         

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { toApiUrl } from '../config/api';
 
 export default function Announcements() {
   const [isActive, setIsActive] = useState(false);
@@ -21,7 +22,7 @@ export default function Announcements() {
 
   useEffect(() => {
     axios
-      .get('/api/announcements')
+      .get(toApiUrl('/api/announcements'))
       .then((response) => {
         console.log(response.data);
         setAnnouncements(Array.isArray(response.data) ? response.data : []);
@@ -59,8 +60,7 @@ export default function Announcements() {
 
   const handleClick = (item: Announcement) => {
     if (item.excel) {
-      // Prepend the backend base URL to form an absolute URL
-      const fileUrl = item.excel;
+      const fileUrl = toApiUrl(item.excel);
 
       // Fetch the file as a blob to ensure it's downloaded as binary data
       fetch(fileUrl)
