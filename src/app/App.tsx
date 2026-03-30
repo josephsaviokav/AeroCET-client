@@ -2,7 +2,6 @@ import { NotFound } from '../Pages/404Error';
 import FullPic from '../Pages/FullPic';
 import Gallery from '../Pages/Gallery';
 import  Home  from '../Pages/Home'
-import Teams from '../Pages/Teams';
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

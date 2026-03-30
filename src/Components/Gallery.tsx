@@ -1,5 +1,5 @@
 import './Gallery.css';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
