@@ -91,3 +91,11 @@ div.scroll-container {
   font-size: 18px;
   color: #666;
 }
+
+@media (max-width: 640px) {
+  .scroll-container img {
+    max-height: 180px;
+    width: 100%;
+    object-fit: cover;
+  }
+}

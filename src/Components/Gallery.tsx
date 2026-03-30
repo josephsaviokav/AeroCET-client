@@ -48,14 +48,14 @@ export default function Gallery() {
       onClick={goTo}
       ref={galleryRef}
       className={clsx(
-        "p-24 w-full shad lg:h-[700px] md:h-[600px] sm:h-[600px] items-center flex-1 flex justify-around lg:flex-row sm:flex-col overflow-hidden",
+        "p-4 sm:p-8 lg:p-24 w-full shad lg:h-[700px] md:h-[600px] sm:h-[600px] items-center flex-1 flex justify-around flex-col lg:flex-row overflow-hidden gap-3 sm:gap-4",
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-1000 delay-200 ease-in-out': isActive }
       )}
     >
       {/* First Column - Scroll Up */}
       <div className={clsx(
-        "flex flex-col scroll-container lg:w-[300px] md:w-[500px] sm:w-[250px] items-center justify-start gap-3",
+        "hidden lg:flex flex-col scroll-container lg:w-[300px] md:w-[500px] sm:w-[250px] items-center justify-start gap-3",
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-700 delay-300 ease-in-out': isActive }
       )}>
@@ -70,7 +70,7 @@ export default function Gallery() {
 
       {/* Second Column - Scroll Down */}
       <div className={clsx(
-        "flex flex-col scroll-container lg:w-[400px] md:w-[500px] sm:w-[250px] items-center justify-start gap-3 mx-2",
+        "flex flex-col scroll-container w-full max-w-[320px] sm:max-w-[420px] md:w-[500px] lg:w-[400px] items-center justify-start gap-3 mx-0 lg:mx-2",
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-1000 delay-700 ease-in-out': isActive }
       )}>
@@ -85,7 +85,7 @@ export default function Gallery() {
 
       {/* Third Column - Scroll Up */}
       <div className={clsx(
-        "flex flex-col scroll-container lg:w-[300px] md:w-[500px] sm:w-[250px] items-center justify-start gap-3",
+        "hidden lg:flex flex-col scroll-container lg:w-[300px] md:w-[500px] sm:w-[250px] items-center justify-start gap-3",
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-700 delay-500 ease-in-out': isActive }
       )}>
